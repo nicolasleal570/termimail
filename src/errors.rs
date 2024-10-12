@@ -7,7 +7,7 @@ pub enum GenerateEmailError {
     Io(std::io::Error),
     Serde(serde_json::Error),
     ApiError(String), // For API-specific errors
-    ExistingAccount,
+    ExistingAccount(String),
 }
 
 impl fmt::Display for GenerateEmailError {
@@ -17,7 +17,9 @@ impl fmt::Display for GenerateEmailError {
             GenerateEmailError::Io(e) => write!(f, "I/O error: {}", e),
             GenerateEmailError::Serde(e) => write!(f, "Serialization error: {}", e),
             GenerateEmailError::ApiError(msg) => write!(f, "API error: {}", msg),
-            GenerateEmailError::ExistingAccount => write!(f, "An existing account already exists."),
+            GenerateEmailError::ExistingAccount(email) => {
+                write!(f, "An existing account already exists. \nEmail: {}", email)
+            }
         }
     }
 }
@@ -29,7 +31,7 @@ impl Error for GenerateEmailError {
             GenerateEmailError::Io(e) => Some(e),
             GenerateEmailError::Serde(e) => Some(e),
             GenerateEmailError::ApiError(_) => None,
-            GenerateEmailError::ExistingAccount => None,
+            GenerateEmailError::ExistingAccount(_) => None,
         }
     }
 }

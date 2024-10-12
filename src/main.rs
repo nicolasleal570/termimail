@@ -28,21 +28,27 @@ async fn main() {
         }
 
         Some(("g", _sub_matches)) => {
-            let _ = generate_email().await;
+            match generate_email().await {
+                Ok(_) => {
+                    println!("Email generated successfully.");
+                }
+                Err(e) => {
+                    eprintln!("Error generating email: {}", e);
+                    std::process::exit(1); // Exit with a non-zero status code
+                }
+            }
         }
 
         Some(("m", _sub_matches)) => {
             println!("M COMMAND {:?}", matches.subcommand());
-
             todo!();
         }
 
         Some(("d", _sub_matches)) => {
             println!("D COMMAND {:?}", matches.subcommand());
-
             todo!();
         }
 
-        _ => unreachable!(), // If all subcommands are defined above, anything else is unreachable!()
+        _ => unreachable!(), // All subcommands are defined, so this should not be possible
     }
 }

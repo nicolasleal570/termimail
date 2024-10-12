@@ -1,5 +1,5 @@
 use std::fs::File;
-use std::io::Write;
+use std::io::{Read, Write};
 
 use rand::distributions::{Alphanumeric, DistString};
 use serde::{Deserialize, Serialize};
@@ -32,9 +32,12 @@ pub async fn generate_email() -> Result<(), GenerateEmailError> {
     if let Some(domain_item) = domains_list.get(0) {
         // Proceed with domain_item
         match File::open("data.json") {
-            Ok(_) => {
-                // The file exists; throw an error because there's an existing account
-                return Err(GenerateEmailError::ExistingAccount);
+            Ok(mut file) => {
+                // The file exists; read the email address
+                let mut contents = String::new();
+                file.read_to_string(&mut contents)?;
+                let json_data: JsonData = serde_json::from_str(&contents)?;
+                return Err(GenerateEmailError::ExistingAccount(json_data.email));
             }
             Err(e) if e.kind() == std::io::ErrorKind::NotFound => {
                 // File does not exist; create an empty JSON
