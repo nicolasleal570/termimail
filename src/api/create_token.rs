@@ -15,6 +15,7 @@ pub struct TokenResponse {
     pub token: String,
     #[serde(rename = "@id")]
     pub _id_url: String,
+    #[serde(rename = "id")]
     pub _id: String,
 }
 

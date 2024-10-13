@@ -11,6 +11,12 @@ pub struct AccountResponse {
     pub id: String,
     pub address: String,
     pub quota: u64,
+    #[serde(rename = "used")]
+    pub _used: u64,
+    #[serde(rename = "isDisabled")]
+    pub _is_disabled: bool,
+    #[serde(rename = "isDeleted")]
+    pub _is_deleted: bool,
     #[serde(rename = "createdAt")]
     pub created_at: String,
     #[serde(rename = "updatedAt")]
