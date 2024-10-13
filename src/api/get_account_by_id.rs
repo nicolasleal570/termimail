@@ -9,7 +9,7 @@ pub async fn get_account_by_id(
     let client = reqwest::Client::new();
     let response = client
         .get(format!("https://api.mail.tm/accounts/{}", account_id))
-        .header("Authorization", format!("Bearer {}", token))
+        .bearer_auth(token)
         .send()
         .await?;
 
