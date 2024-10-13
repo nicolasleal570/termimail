@@ -5,6 +5,8 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4.5.20", features = ["derive"] }
+comfy-table = "7.1.1"
+inquire = { version = "0.7.5", features = ["date"] }
 rand = "0.8.5"
 reqwest = { version = "0.12.8", features = ["json"] }
 serde = { version = "1.0.210", features = ["derive"] }

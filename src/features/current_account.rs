@@ -1,5 +1,7 @@
 use std::{fs::File, io::Read};
 
+use comfy_table::Table;
+
 use crate::{
     api::get_account_by_id::get_account_by_id, data_struct::JsonData, errors::GenerateEmailError,
 };
@@ -14,14 +16,13 @@ pub async fn current_account() -> Result<(), GenerateEmailError> {
 
             let account_info = get_account_by_id(json_data.id, json_data.token).await?;
 
-            let msg = format!(
-                "Email: {} \nQuota: {} \nCreated at: {}",
-                account_info.email, account_info.quota, account_info.created_at
-            )
-            .trim()
-            .to_string();
+            let mut table = Table::new();
 
-            println!("{}", msg);
+            table
+                .set_header(vec!["Email", "Created at"])
+                .add_row(vec![account_info.email, account_info.created_at]);
+
+            println!("{table}");
 
             Ok(())
         }

@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::{Read, Write};
 
+use comfy_table::Table;
 use rand::distributions::{Alphanumeric, DistString};
 
 use crate::api::create_account::create_account;
@@ -58,6 +59,14 @@ pub async fn generate_email() -> Result<(), GenerateEmailError> {
                 // Write the JSON string to "data.json"
                 let mut file = File::create("data.json")?;
                 file.write_all(json_string.as_bytes())?;
+
+                let mut table = Table::new();
+
+                table
+                    .set_header(vec!["Email", "Created at"])
+                    .add_row(vec![user_data.email, user_data.created_at]);
+
+                println!("{table}");
             }
             Err(e) => {
                 eprintln!("Failed to open data.json: {:?}", e);
