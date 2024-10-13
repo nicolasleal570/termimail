@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use std::error::Error;
 
 use crate::errors::GenerateEmailError;
 
@@ -15,8 +14,8 @@ struct TokenRequest {
 pub struct TokenResponse {
     pub token: String,
     #[serde(rename = "@id")]
-    pub id_url: String,
-    pub id: String,
+    pub _id_url: String,
+    pub _id: String,
 }
 
 pub async fn create_token(

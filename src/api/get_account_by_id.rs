@@ -1,32 +1,15 @@
-use serde::Serialize;
-
 use crate::errors::GenerateEmailError;
 
 use super::types::{account_info::AccountInfo, account_response::AccountResponse};
 
-/// Represents the request body for creating an account.
-#[derive(Serialize, Debug)]
-struct AccountRequest {
-    address: String,
-    password: String,
-}
-
-pub async fn create_account(
-    email_address: String,
-    password: String,
+pub async fn get_account_by_id(
+    account_id: String,
+    token: String,
 ) -> Result<AccountInfo, GenerateEmailError> {
-    // Create the request body
-    let account_request = AccountRequest {
-        address: email_address.clone(),
-        password,
-    };
-
     let client = reqwest::Client::new();
-
-    // Send the POST request
     let response = client
-        .post("https://api.mail.tm/accounts")
-        .json(&account_request)
+        .get(format!("https://api.mail.tm/accounts/{}", account_id))
+        .header("Authorization", format!("Bearer {}", token))
         .send()
         .await?;
 

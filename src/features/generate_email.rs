@@ -2,29 +2,12 @@ use std::fs::File;
 use std::io::{Read, Write};
 
 use rand::distributions::{Alphanumeric, DistString};
-use serde::{Deserialize, Serialize};
 
 use crate::api::create_account::create_account;
 use crate::api::create_token::create_token;
 use crate::api::get_domains::get_domains;
+use crate::data_struct::JsonData;
 use crate::errors::GenerateEmailError;
-
-#[derive(Serialize, Deserialize, Debug)]
-struct JsonData {
-    id: String,
-    email: String,
-    password: String,
-    quota: String,
-    token: String,
-    #[serde(rename = "isDisabled")]
-    is_disabled: bool,
-    #[serde(rename = "isDeleted")]
-    is_deleted: bool,
-    #[serde(rename = "createdAt")]
-    created_at: String,
-    #[serde(rename = "updatedAt")]
-    updated_at: String,
-}
 
 pub async fn generate_email() -> Result<(), GenerateEmailError> {
     let domains_list = get_domains().await?;

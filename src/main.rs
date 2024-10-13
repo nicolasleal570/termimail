@@ -1,9 +1,10 @@
 mod api;
+mod data_struct;
 mod errors;
 mod features;
 
 use clap::Command;
-use features::generate_email::generate_email;
+use features::{current_account::current_account, generate_email::generate_email};
 
 fn cli() -> Command {
     Command::new("termail")
@@ -23,8 +24,13 @@ async fn main() {
 
     match matches.subcommand() {
         Some(("me", _sub_matches)) => {
-            println!("ME COMMAND {:?}", matches.subcommand());
-            todo!();
+            match current_account().await {
+                Ok(_) => {}
+                Err(e) => {
+                    eprintln!("Error getting created account: {}", e);
+                    std::process::exit(1); // Exit with a non-zero status code
+                }
+            }
         }
 
         Some(("g", _sub_matches)) => {
