@@ -4,7 +4,9 @@ mod errors;
 mod features;
 
 use clap::Command;
-use features::{current_account::current_account, generate_email::generate_email};
+use features::{
+    current_account::current_account, fetch_emails::fetch_emails, generate_email::generate_email,
+};
 
 fn cli() -> Command {
     Command::new("termail")
@@ -35,9 +37,7 @@ async fn main() {
 
         Some(("g", _sub_matches)) => {
             match generate_email().await {
-                Ok(_) => {
-                    println!("Email generated successfully.");
-                }
+                Ok(_) => {}
                 Err(e) => {
                     eprintln!("Error generating email: {}", e);
                     std::process::exit(1); // Exit with a non-zero status code
@@ -46,8 +46,13 @@ async fn main() {
         }
 
         Some(("m", _sub_matches)) => {
-            println!("M COMMAND {:?}", matches.subcommand());
-            todo!();
+            match fetch_emails().await {
+                Ok(_) => {}
+                Err(e) => {
+                    eprintln!("Error while getting emails: {}", e);
+                    std::process::exit(1); // Exit with a non-zero status code
+                }
+            }
         }
 
         Some(("d", _sub_matches)) => {
