@@ -2,6 +2,7 @@ mod api;
 mod data_struct;
 mod errors;
 mod features;
+mod utils;
 
 use clap::Command;
 use features::{
@@ -9,11 +10,13 @@ use features::{
 };
 
 fn cli() -> Command {
+    const VERSION: &str = env!("CARGO_PKG_VERSION");
+
     Command::new("termail")
         .about("Generate temporal email domains from your terminal with ease (Mailsy alternative)")
+        .version(VERSION)
         .subcommand_required(true)
         .arg_required_else_help(true)
-        .allow_external_subcommands(true)
         .subcommand(Command::new("me").about("Show details of the current account"))
         .subcommand(Command::new("g").about("Generate a new email account"))
         .subcommand(Command::new("m").about("Fetch messages from the inbox"))

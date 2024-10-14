@@ -2,7 +2,7 @@ use crate::errors::GenerateEmailError;
 
 use super::types::messages_response::MessagesResponse;
 
-pub async fn get_messages(token: String) -> Result<MessagesResponse, GenerateEmailError> {
+pub async fn get_messages(token: &str) -> Result<MessagesResponse, GenerateEmailError> {
     let client = reqwest::Client::new();
     let response = client
         .get("https://api.mail.tm/messages")

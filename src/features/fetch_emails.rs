@@ -2,7 +2,10 @@ use std::{fs::File, io::Read};
 
 use inquire::Select;
 
-use crate::{api::get_messages::get_messages, data_struct::JsonData, errors::GenerateEmailError};
+use crate::{
+    api::get_messages::get_messages, data_struct::JsonData, errors::GenerateEmailError,
+    utils::open_email::open_email,
+};
 
 pub async fn fetch_emails() -> Result<(), GenerateEmailError> {
     match File::open("data.json") {
@@ -11,7 +14,7 @@ pub async fn fetch_emails() -> Result<(), GenerateEmailError> {
             file.read_to_string(&mut contents)?;
             let json_data: JsonData = serde_json::from_str(&contents)?;
 
-            let messages_payload = get_messages(json_data.token).await?;
+            let messages_payload = get_messages(&json_data.token).await?;
 
             if messages_payload.messages.len() == 0 {
                 println!("No Emails.");
@@ -22,10 +25,9 @@ pub async fn fetch_emails() -> Result<(), GenerateEmailError> {
                 .prompt()
                 .expect("Failed to select your email. Try again");
 
-            println!("You selected: {:?}", selected_email);
+            open_email(selected_email, &json_data.token).await?;
 
-            todo!("Handle open email feature");
-            // Ok(())
+            Ok(())
         }
         Err(e) if e.kind() == std::io::ErrorKind::NotFound => {
             return Err(GenerateEmailError::ApiError(
