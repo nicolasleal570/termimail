@@ -6,7 +6,8 @@ mod utils;
 
 use clap::Command;
 use features::{
-    current_account::current_account, fetch_emails::fetch_emails, generate_email::generate_email,
+    current_account::current_account, delete_account::delete_account, fetch_emails::fetch_emails,
+    generate_email::generate_email,
 };
 
 fn cli() -> Command {
@@ -59,8 +60,13 @@ async fn main() {
         }
 
         Some(("d", _sub_matches)) => {
-            println!("D COMMAND {:?}", matches.subcommand());
-            todo!();
+            match delete_account().await {
+                Ok(_) => {}
+                Err(e) => {
+                    eprintln!("Error while deleting account: {}", e);
+                    std::process::exit(1); // Exit with a non-zero status code
+                }
+            }
         }
 
         _ => unreachable!(), // All subcommands are defined, so this should not be possible
