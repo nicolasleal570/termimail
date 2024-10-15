@@ -1108,21 +1108,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust-mailsy"
-version = "0.1.0"
-dependencies = [
- "clap",
- "comfy-table",
- "inquire",
- "rand",
- "reqwest",
- "serde",
- "serde_json",
- "tokio",
- "webbrowser",
-]
-
-[[package]]
 name = "rustc-demangle"
 version = "0.1.24"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1433,6 +1418,21 @@ dependencies = [
  "once_cell",
  "rustix",
  "windows-sys 0.59.0",
+]
+
+[[package]]
+name = "termimail"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "comfy-table",
+ "inquire",
+ "rand",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "tokio",
+ "webbrowser",
 ]
 
 [[package]]

@@ -1,7 +1,15 @@
 [package]
-name = "rust-mailsy"
+name = "termimail"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+description = "Generate temporary email domains from your terminal with ease"
+authors = ["Nicolás Leal <lealnicolas96@gmail.com>"]
+repository = "https://github.com/nicolasleal570/termimail"
+
+[[bin]]
+name = "termimail"
+path = "src/main.rs"
 
 [dependencies]
 clap = { version = "4.5.20", features = ["derive"] }

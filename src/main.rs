@@ -13,7 +13,7 @@ use features::{
 fn cli() -> Command {
     const VERSION: &str = env!("CARGO_PKG_VERSION");
 
-    Command::new("termail")
+    Command::new("termimail")
         .about("Generate temporal email domains from your terminal with ease (Mailsy alternative)")
         .version(VERSION)
         .subcommand_required(true)
