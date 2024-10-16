@@ -1,6 +1,6 @@
 use std::{fs::File, io::Read};
 
-use inquire::Select;
+use inquire::{InquireError, Select};
 
 use crate::{
     api::get_messages::get_messages, data_struct::JsonData, errors::GenerateEmailError,
@@ -21,13 +21,26 @@ pub async fn fetch_emails() -> Result<(), GenerateEmailError> {
                 return Ok(());
             }
 
-            let selected_email = Select::new("Your inbox:", messages_payload.messages)
-                .prompt()
-                .expect("Failed to select your email. Try again");
+            let ans = Select::new("Your inbox:", messages_payload.messages).prompt();
 
-            open_email(selected_email, &json_data.token).await?;
+            match ans {
+                Ok(selected_email) => {
+                    open_email(selected_email, &json_data.token).await?;
 
-            Ok(())
+                    Ok(())
+                }
+                Err(InquireError::OperationInterrupted | InquireError::OperationCanceled) => {
+                    // Handle Ctrl+C or cancellation gracefully
+                    //println!("Operation interrupted by user.");
+                    return Ok(());
+                }
+                Err(err) => {
+                    // Handle other errors
+                    eprintln!("Failed to select your email: {}", err);
+                    // Return an error or handle it accordingly
+                    return Err(GenerateEmailError::ApiError(err.to_string()));
+                }
+            }
         }
         Err(e) if e.kind() == std::io::ErrorKind::NotFound => {
             return Err(GenerateEmailError::ApiError(
