@@ -6,6 +6,8 @@
 
 Generate temporary email accounts directly from your terminal with ease. **TermiMail** is a Rust-based CLI tool designed to streamline the way developers and tech enthusiasts manage disposable emails right from the command line.
 
+![Termimail UI](https://raw.githubusercontent.com/nicolasleal570/termimail/main/assets/example_1.png)
+
 ## Table of Contents
 
 - [Features](#features)
